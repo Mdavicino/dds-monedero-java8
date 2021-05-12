@@ -17,7 +17,7 @@ public class Cuenta {
   private List<Movimiento> movimientos = new ArrayList<>();
 
   public Cuenta() {
-    saldo = BigDecimal.valueOf(0);
+    saldo = BigDecimal.ZERO;
   }
 
   public Cuenta(BigDecimal montoInicial) {
@@ -87,7 +87,7 @@ public class Cuenta {
 
   public Stream<Movimiento> getExtraccionesDe(LocalDate unaFecha){
     return getMovimientos().stream()
-        .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(unaFecha));
+        .filter(movimiento -> movimiento.fueExtraidoEn(unaFecha));
   }
 
   public List<Movimiento> getMovimientos() {

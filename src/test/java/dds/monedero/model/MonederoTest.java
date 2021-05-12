@@ -24,52 +24,58 @@ public class MonederoTest {
 
   @Test
   void Poner() {
-    cuenta.realizarDeposito(1500);
-    assertEquals(1500, cuenta.getSaldo());
+    cuenta.realizarDeposito(BigDecimal.valueOf(1500));
+    assertEquals(BigDecimal.valueOf(1500), cuenta.getSaldo());
   }
 
   @Test
   void PonerMontoNegativo() {
-    assertThrows(MontoNegativoException.class, () -> cuenta.realizarDeposito(-1500));
+    assertThrows(MontoNegativoException.class, () -> cuenta.realizarDeposito(BigDecimal.valueOf(-1500)));
   }
 
   @Test
   void TresDepositos() {
-    cuenta.realizarDeposito(1500);
-    cuenta.realizarDeposito(456);
-    cuenta.realizarDeposito(1900);
+    cuenta.realizarDeposito(BigDecimal.valueOf(1500));
+    cuenta.realizarDeposito(BigDecimal.valueOf(456));
+    cuenta.realizarDeposito(BigDecimal.valueOf(1900));
     assertEquals(3, cuenta.getMovimientos().toArray().length);
   }
 
   @Test
   void MasDeTresDepositos() {
     assertThrows(MaximaCantidadDepositosException.class, () -> {
-          cuenta.realizarDeposito(1500);
-          cuenta.realizarDeposito(456);
-          cuenta.realizarDeposito(1900);
-          cuenta.realizarDeposito(245);
+          cuenta.realizarDeposito(BigDecimal.valueOf(1500));
+          cuenta.realizarDeposito(BigDecimal.valueOf(456));
+          cuenta.realizarDeposito(BigDecimal.valueOf(1900));
+          cuenta.realizarDeposito(BigDecimal.valueOf(245));
     });
   }
 
   @Test
   void ExtraerMasQueElSaldo() {
     assertThrows(SaldoMenorException.class, () -> {
-          cuenta.setSaldo(90);
-          cuenta.realizarExtraccion(1001);
+          cuenta.setSaldo(BigDecimal.valueOf(90));
+          cuenta.realizarExtraccion(BigDecimal.valueOf(1001));
     });
   }
 
   @Test
   public void ExtraerMasDe1000() {
     assertThrows(MaximoExtraccionDiarioException.class, () -> {
-      cuenta.setSaldo(5000);
-      cuenta.realizarExtraccion(1001);
+      cuenta.setSaldo(BigDecimal.valueOf(5000));
+      cuenta.realizarExtraccion(BigDecimal.valueOf(1001));
     });
   }
 
   @Test
   public void ExtraerMontoNegativo() {
-    assertThrows(MontoNegativoException.class, () -> cuenta.realizarExtraccion(-500));
+    assertThrows(MontoNegativoException.class, () -> cuenta.realizarExtraccion(BigDecimal.valueOf(-500)));
+  }
+
+  @Test
+  public void SeCreaLaCuentaConSaldo(){
+    Cuenta cuentaSaldo = new Cuenta(BigDecimal.valueOf(1000));
+    assertEquals(BigDecimal.valueOf(1000), cuentaSaldo.getSaldo());
   }
 
 }
